@@ -1,0 +1,20 @@
+QLabel#mainHeader {
+
+font-size: 20px;
+
+}
+
+QGroupBox#leftSide {
+
+border: 5px;
+border-color: black;
+border-style: solid;
+
+}
+
+QLabel {
+background-color: red;
+}
+
+
+
