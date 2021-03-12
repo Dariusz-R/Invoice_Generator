@@ -32,6 +32,8 @@ public:
     QString getPostalCode() const;
     void setPostalCode(const QString &value);
 
+
+
 private:
     QString vatNumber;
     QString fullName;
@@ -41,6 +43,7 @@ private:
     QString houseNumber;
     QString state;
     QString postalCode;
+
 };
 
 #endif // COMPANY_H

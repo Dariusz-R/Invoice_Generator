@@ -8,47 +8,47 @@ class Merchandise
 public:
     Merchandise();
 
-    int getQuantity() const;
-    void setQuantity(int value);
+    QString getQuantity() const;
+    void setQuantity(QString value);
 
     QString getServiceOrDescription() const;
     void setServiceOrDescription(const QString &value);
 
-    int getExchangeRate() const;
-    void setExchangeRate(int value);
+    QString getExchangeRate() const;
+    void setExchangeRate(QString value);
 
-    int getUnitNetPrice() const;
-    void setUnitNetPrice(int value);
+    QString getUnitNetPrice() const;
+    void setUnitNetPrice(QString value);
 
-    int getNetAmount() const;
-    void setNetAmount(int value);
+    QString getNetAmount() const;
+    void setNetAmount(QString value);
 
-    int getVatRate() const;
-    void setVatRate(int value);
+    QString getVatRate() const;
+    void setVatRate(QString value);
 
-    int getVatAmount() const;
-    void setVatAmount(int value);
+    QString getVatAmount() const;
+    void setVatAmount(QString value);
 
-    int getGrossAmount() const;
-    void setGrossAmount(int value);
+    QString getGrossAmount() const;
+    void setGrossAmount(QString value);
 
-    int getOrdinalNumber();
-    void setOrdinalNumber(int value);
+    QString getOrdinalNumber();
+    void setOrdinalNumber(QString value);
 
     static int getNumberOfGoods();
     static void setNumberOfGoods(int value);
 
 private:
     static int numberOfGoods;
-    int ordinalNumber;
-    int quantity;
+    QString ordinalNumber;
+    QString quantity;
     QString serviceOrDescription;
-    int exchangeRate;
-    int unitNetPrice;
-    int netAmount;
-    int vatRate;
-    int vatAmount;
-    int grossAmount;
+    QString exchangeRate;
+    QString unitNetPrice;
+    QString netAmount;
+    QString vatRate;
+    QString vatAmount;
+    QString grossAmount;
 };
 
 #endif // MERCHANDISE_H

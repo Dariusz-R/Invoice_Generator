@@ -1,10 +1,49 @@
 #include <QHeaderView>
 #include <QFile>
 
+#include <QDebug>
+
 
 #include "mainwindow.h"
 
 
+
+void MainWindow::on_SaveButton_clicked()
+{
+
+}
+
+void MainWindow::on_GeneratePdfButton_clicked()
+{
+
+}
+
+void MainWindow::on_ResetAgreementPartiesFormButton_clicked()
+{
+
+}
+
+void MainWindow::on_ResetAllButton_clicked()
+{
+
+}
+
+void MainWindow::on_RemoveItemButton_clicked()
+{
+    tableOfGoodsModel->removeRows(tableOfGoodsView->currentIndex().row(), 1);
+    tableOfGoodsView->updateGeometry();
+
+}
+
+void MainWindow::on_addItemButton_clicked()
+{
+
+}
+
+void MainWindow::on_ResetListOfGoodsButton_clicked()
+{
+    tableOfGoodsModel->removeRows(0, tableOfGoodsModel->listOfGoodsSize());
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -146,10 +185,21 @@ void MainWindow::setUpAgreementPartiesViewSizes()
 
 void MainWindow::createLeftSideButtons()
 {
+    resetAgreementPartiesFormButton = new QPushButton("Reset Agreement Parties Form");
+    leftLayout->addWidget(resetAgreementPartiesFormButton);
+    connect(resetAgreementPartiesFormButton, SIGNAL(clicked()), this, SLOT(on_ResetAgreementPartiesFormButton_clicked()));
+
     saveButton = new QPushButton("Save");
     leftLayout->addWidget(saveButton);
+    connect(saveButton, SIGNAL(clicked()), this, SLOT(on_SaveButton_clicked()));
+
     generatePdfButton = new QPushButton("Generate PDF");
     leftLayout->addWidget(generatePdfButton);
+    connect(generatePdfButton, SIGNAL(clicked()), this, SLOT(on_GeneratePdfButton_clicked()));
+
+    resetAllButton = new QPushButton("Reset All");
+    leftLayout->addWidget(resetAllButton);
+    connect(resetAllButton, SIGNAL(clicked()), this, SLOT(on_ResetAllButton_clicked()));
 }
 
 //=================================================================================================================================
@@ -179,9 +229,15 @@ void MainWindow::createRightSide()
 
     addItemButton = new QPushButton("Add Item");
     rightLayout->addWidget(addItemButton);
+    connect(addItemButton, SIGNAL(clicked()), this, SLOT(on_addItemButton_clicked()));
 
     removeItemButton = new QPushButton("Remove Item");
     rightLayout->addWidget(removeItemButton);
+    connect(removeItemButton, SIGNAL(clicked()), this, SLOT(on_RemoveItemButton_clicked()));
+
+    resetListOfGoodsButton = new QPushButton("Reset List of Goods");
+    rightLayout->addWidget(resetListOfGoodsButton);
+    connect(resetListOfGoodsButton, SIGNAL(clicked()), this, SLOT(on_ResetListOfGoodsButton_clicked()));
 
     rightSide->setLayout(rightLayout);
 }

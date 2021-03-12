@@ -4,33 +4,33 @@ int Merchandise::numberOfGoods = 0;
 
 Merchandise::Merchandise()
 {
-     ordinalNumber = ++numberOfGoods;
-     quantity = 0;
-     serviceOrDescription = "";
-     exchangeRate = 0;
-     unitNetPrice = 0;
-     netAmount = 0;
-     vatRate = 0;
-     vatAmount = 0;
-     grossAmount = 0;
+    ordinalNumber = QString::number(++numberOfGoods);
+    quantity ="";
+    serviceOrDescription = "";
+    exchangeRate = "";
+    unitNetPrice = "";
+    netAmount = "";
+    vatRate = "";
+    vatAmount = "";
+    grossAmount = "";
 }
 
-int Merchandise::getGrossAmount() const
+QString Merchandise::getGrossAmount() const
 {
     return grossAmount;
 }
 
-void Merchandise::setGrossAmount(int value)
+void Merchandise::setGrossAmount(QString value)
 {
     grossAmount = value;
 }
 
-int Merchandise::getOrdinalNumber()
+QString Merchandise::getOrdinalNumber()
 {
     return ordinalNumber;
 }
 
-void Merchandise::setOrdinalNumber(int value)
+void Merchandise::setOrdinalNumber(QString value)
 {
     ordinalNumber = value;
 }
@@ -45,52 +45,52 @@ void Merchandise::setNumberOfGoods(int value)
     numberOfGoods = value;
 }
 
-int Merchandise::getVatAmount() const
+QString Merchandise::getVatAmount() const
 {
     return vatAmount;
 }
 
-void Merchandise::setVatAmount(int value)
+void Merchandise::setVatAmount(QString value)
 {
     vatAmount = value;
 }
 
-int Merchandise::getVatRate() const
+QString Merchandise::getVatRate() const
 {
     return vatRate;
 }
 
-void Merchandise::setVatRate(int value)
+void Merchandise::setVatRate(QString value)
 {
     vatRate = value;
 }
 
-int Merchandise::getNetAmount() const
+QString Merchandise::getNetAmount() const
 {
     return netAmount;
 }
 
-void Merchandise::setNetAmount(int value)
+void Merchandise::setNetAmount(QString value)
 {
     netAmount = value;
 }
 
-int Merchandise::getUnitNetPrice() const
+QString Merchandise::getUnitNetPrice() const
 {
     return unitNetPrice;
 }
 
-void Merchandise::setUnitNetPrice(int value)
+void Merchandise::setUnitNetPrice(QString value)
 {
     unitNetPrice = value;
 }
 
-int Merchandise::getExchangeRate() const
+QString Merchandise::getExchangeRate() const
 {
     return exchangeRate;
 }
 
-void Merchandise::setExchangeRate(int value)
+void Merchandise::setExchangeRate(QString value)
 {
     exchangeRate = value;
 }
@@ -105,12 +105,12 @@ void Merchandise::setServiceOrDescription(const QString &value)
     serviceOrDescription = value;
 }
 
-int Merchandise::getQuantity() const
+QString Merchandise::getQuantity() const
 {
     return quantity;
 }
 
-void Merchandise::setQuantity(int value)
+void Merchandise::setQuantity(QString value)
 {
     quantity = value;
 }
