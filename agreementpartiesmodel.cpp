@@ -9,6 +9,11 @@ AgreementPartiesModel::AgreementPartiesModel(QObject* parent)
 
 }
 
+AgreementPartiesModel::~AgreementPartiesModel()
+{
+    qDeleteAll(companies);
+}
+
 int AgreementPartiesModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);

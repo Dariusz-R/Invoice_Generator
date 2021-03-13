@@ -11,9 +11,9 @@ class TableOfGoodsModel : public QAbstractTableModel
 public slots:
     void addItem();
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-
 public:
     TableOfGoodsModel(QObject* parent = nullptr);
+    ~TableOfGoodsModel();
 
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
@@ -34,6 +34,7 @@ public:
     };
 
     short listOfGoodsSize() const;
+    void clearListOfGoods();
 
 private:
 
@@ -48,5 +49,6 @@ public:
 public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     void chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value);
+    void updateOrdinalNumberColumn();
 };
 #endif // TABLEOFGOODSMODEL_H

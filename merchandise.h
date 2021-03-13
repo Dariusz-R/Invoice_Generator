@@ -7,6 +7,7 @@ class Merchandise
 {
 public:
     Merchandise();
+    ~Merchandise();
 
     QString getQuantity() const;
     void setQuantity(QString value);

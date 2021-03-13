@@ -15,6 +15,11 @@ Merchandise::Merchandise()
     grossAmount = "";
 }
 
+Merchandise::~Merchandise()
+{
+    --numberOfGoods;
+}
+
 QString Merchandise::getGrossAmount() const
 {
     return grossAmount;

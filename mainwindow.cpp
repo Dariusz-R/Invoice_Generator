@@ -30,19 +30,20 @@ void MainWindow::on_ResetAllButton_clicked()
 
 void MainWindow::on_RemoveItemButton_clicked()
 {
-    tableOfGoodsModel->removeRows(tableOfGoodsView->currentIndex().row(), 1);
-    tableOfGoodsView->updateGeometry();
-
+    if(tableOfGoodsView->currentIndex().isValid())
+        tableOfGoodsModel->removeRows(tableOfGoodsView->currentIndex().row(), 1);
 }
 
 void MainWindow::on_addItemButton_clicked()
 {
-
+    tableOfGoodsModel->addItem();
 }
 
 void MainWindow::on_ResetListOfGoodsButton_clicked()
 {
-    tableOfGoodsModel->removeRows(0, tableOfGoodsModel->listOfGoodsSize());
+
+    tableOfGoodsModel->clearListOfGoods();
+
 }
 
 MainWindow::MainWindow(QWidget *parent)

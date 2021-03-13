@@ -9,6 +9,7 @@ class AgreementPartiesModel : public QAbstractTableModel
 {
 public:
     AgreementPartiesModel(QObject* parent = nullptr);
+    ~AgreementPartiesModel();
 
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;

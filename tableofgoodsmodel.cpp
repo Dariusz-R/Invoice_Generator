@@ -11,6 +11,11 @@ TableOfGoodsModel::TableOfGoodsModel(QObject* parent)
     listOfGoods.append(new Merchandise());
 }
 
+TableOfGoodsModel::~TableOfGoodsModel()
+{
+    qDeleteAll(listOfGoods);
+}
+
 int TableOfGoodsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
@@ -161,6 +166,14 @@ void TableOfGoodsModel::chooseAndExecuteSetter(const QModelIndex &itemIndex, con
     }
 }
 
+void TableOfGoodsModel::updateOrdinalNumberColumn()
+{
+    for(short i = 0 ; i < listOfGoods.size(); ++i){
+        listOfGoods.at(i)->setOrdinalNumber(QString::number(i));
+        emit dataChanged(index(i, OrdinalNumberColumn), index(i, OrdinalNumberColumn));
+    }
+}
+
 bool TableOfGoodsModel::setData(const QModelIndex &index, const QVariant &value, int role){
 
     if(!index.isValid())
@@ -184,20 +197,37 @@ short TableOfGoodsModel::listOfGoodsSize() const
     return listOfGoods.size();
 }
 
+void TableOfGoodsModel::clearListOfGoods()
+{
+
+    beginRemoveRows(QModelIndex(), 0, listOfGoods.size()-1);
+    qDeleteAll(listOfGoods.begin(), listOfGoods.end());
+    listOfGoods.clear();
+    endRemoveRows();
+    addItem();
+}
+
 void TableOfGoodsModel::addItem()
 {
 
+    beginInsertRows(QModelIndex(), listOfGoods.size() - 1, listOfGoods.size() - 1);
+    listOfGoods.append( new Merchandise);
+    endInsertRows();
 }
 
 bool TableOfGoodsModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     if(listOfGoods.size()>0){
         beginRemoveRows(parent, row, row + count - 1);
-        for( short i = row; i < row + count ; ++i){
+        for( short i = row + count - 1; i == row ; --i){
+            delete listOfGoods.at(i);
             listOfGoods.removeAt(i);
             qDebug() << "Test removal i = " << i;
         }
         endRemoveRows();
+
+        updateOrdinalNumberColumn();
+
         return true;
     }
     else
