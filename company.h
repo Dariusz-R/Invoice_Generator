@@ -32,8 +32,7 @@ public:
     QString getPostalCode() const;
     void setPostalCode(const QString &value);
 
-
-
+//MEMBERS
 private:
     QString vatNumber;
     QString fullName;

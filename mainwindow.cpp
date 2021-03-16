@@ -6,7 +6,38 @@
 
 #include "mainwindow.h"
 
+//======================================================================
+//CONSTRUCTORS===========================================================
+//======================================================================
 
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+{
+    mainWidget = new QWidget;
+    mainWidget->setObjectName("mainWidget");
+    mainLayout = new QHBoxLayout;
+    readSaveAndSetStyleSheet();
+    configureAndShowMainWindowContent();
+}
+
+//======================================================================
+//DESCRUCTOR============================================================
+//======================================================================
+
+MainWindow::~MainWindow()
+{
+}
+
+//======================================================================
+//PUBLIC SLOTS==========================================================
+//======================================================================
+
+//LEFT SIDE BUTTONS
+
+void MainWindow::on_ResetAgreementPartiesFormButton_clicked()
+{
+
+}
 
 void MainWindow::on_SaveButton_clicked()
 {
@@ -18,25 +49,22 @@ void MainWindow::on_GeneratePdfButton_clicked()
 
 }
 
-void MainWindow::on_ResetAgreementPartiesFormButton_clicked()
+void MainWindow::on_ResetAllButton_clicked()
 {
 
 }
 
-void MainWindow::on_ResetAllButton_clicked()
-{
+//RIGHT SIDE BUTTONS
 
+void MainWindow::on_addItemButton_clicked()
+{
+    tableOfGoodsModel->addItem();
 }
 
 void MainWindow::on_RemoveItemButton_clicked()
 {
     if(tableOfGoodsView->currentIndex().isValid())
         tableOfGoodsModel->removeRows(tableOfGoodsView->currentIndex().row(), 1);
-}
-
-void MainWindow::on_addItemButton_clicked()
-{
-    tableOfGoodsModel->addItem();
 }
 
 void MainWindow::on_ResetListOfGoodsButton_clicked()
@@ -46,15 +74,10 @@ void MainWindow::on_ResetListOfGoodsButton_clicked()
 
 }
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
-    mainWidget = new QWidget;
-    mainWidget->setObjectName("mainWidget");
-    mainLayout = new QHBoxLayout;
-    readSaveAndSetStyleSheet();
-    configureAndShowMainWindowContent();
-}
+//======================================================================
+//PRIVATE METHODS=======================================================
+//======================================================================
+
 void MainWindow::readSaveAndSetStyleSheet(){
     QFile file(":/styleSheet/style.qss");
     file.open(QFile::ReadOnly);
@@ -62,6 +85,7 @@ void MainWindow::readSaveAndSetStyleSheet(){
     setStyleSheet(styleSheetContent);
     ensurePolished();
 }
+
 
 void MainWindow::configureAndShowMainWindowContent()
 {
@@ -77,9 +101,9 @@ void MainWindow::configureAndShowMainWindowContent()
 
 }
 
-//=================================================================================================================================
+
 //LEFT SIDE ======================================================================================================================
-//=================================================================================================================================
+
 
 void MainWindow::createLeftSide()
 {
@@ -105,8 +129,6 @@ void MainWindow::createLeftSide()
 
 }
 
-//--------------------------- addInvoiceInfoView() and subfunctions -----------------------------------------------------------------------------------
-
 void MainWindow::addInvoiceInfoView()
 {
     invoiceInfoModel = new InvoiceInfoModel;
@@ -126,8 +148,6 @@ void MainWindow::setUpInvoiceInfoViewSizes()
     invoiceInfoView->setColumnWidth(InvoiceInfoModel::DateOfPaymentColumn, 100);
     invoiceInfoView->horizontalHeader()->setSectionResizeMode(InvoiceInfoModel::DateOfPaymentColumn, QHeaderView::Fixed);
 }
-
-//--------------------------- createAgreementPartiesBox() and subfunctions -----------------------------------------------------------------------------
 
 void MainWindow::createAgreementPartiesBox()
 {
@@ -161,7 +181,6 @@ void MainWindow::setUpAgreementPartiesHeaderSizes()
     agreementPartiesHeader->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 }
 
-
 void MainWindow::createAgreementPartiesView()
 {
     agreementPartiesModel = new AgreementPartiesModel;
@@ -181,8 +200,6 @@ void MainWindow::setUpAgreementPartiesViewSizes()
     agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::supplierColumn, QHeaderView::Stretch);
     agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::customerColumn, QHeaderView::Stretch);
 }
-
-//--------------------------- createLeftSideButtons() -----------------------------------------------------------------------------
 
 void MainWindow::createLeftSideButtons()
 {
@@ -206,6 +223,7 @@ void MainWindow::createLeftSideButtons()
 //=================================================================================================================================
 //RIGHT SIDE ======================================================================================================================
 //=================================================================================================================================
+
 void MainWindow::createRightSide()
 {
     rightSide = new QGroupBox;
@@ -223,22 +241,9 @@ void MainWindow::createRightSide()
     tableOfGoodsView->setModel(tableOfGoodsModel);
     setUpTableOfGoodsViewSizes();
 
-    setUpTableOfGoodsViewSizes();
-
-
     rightLayout->addWidget(tableOfGoodsView);
 
-    addItemButton = new QPushButton("Add Item");
-    rightLayout->addWidget(addItemButton);
-    connect(addItemButton, SIGNAL(clicked()), this, SLOT(on_addItemButton_clicked()));
-
-    removeItemButton = new QPushButton("Remove Item");
-    rightLayout->addWidget(removeItemButton);
-    connect(removeItemButton, SIGNAL(clicked()), this, SLOT(on_RemoveItemButton_clicked()));
-
-    resetListOfGoodsButton = new QPushButton("Reset List of Goods");
-    rightLayout->addWidget(resetListOfGoodsButton);
-    connect(resetListOfGoodsButton, SIGNAL(clicked()), this, SLOT(on_ResetListOfGoodsButton_clicked()));
+    createRightSideButtons();
 
     rightSide->setLayout(rightLayout);
 }
@@ -250,15 +255,25 @@ void MainWindow::setUpTableOfGoodsViewSizes()
     tableOfGoodsView->horizontalHeader()->setSectionResizeMode(TableOfGoodsModel::OrdinalNumberColumn, QHeaderView::Fixed);
     tableOfGoodsView->setColumnWidth( TableOfGoodsModel::OrdinalNumberColumn, 20 );
     tableOfGoodsView->horizontalHeader()->setSectionResizeMode(TableOfGoodsModel::ServiceOrDescriptionColumn, QHeaderView::Stretch);
-    for(short i = 2; i < tableOfGoodsModel->columnCount(QModelIndex()); ++i){
+    for(short i = 2; i < tableOfGoodsModel->getNumberOfColumns(); ++i){
         tableOfGoodsView->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
         tableOfGoodsView->setColumnWidth( i, 60 );
     }
 }
 
-
-
-MainWindow::~MainWindow()
+void MainWindow::createRightSideButtons()
 {
+    addItemButton = new QPushButton("Add Item");
+    rightLayout->addWidget(addItemButton);
+    connect(addItemButton, SIGNAL(clicked()), this, SLOT(on_addItemButton_clicked()));
+
+    removeItemButton = new QPushButton("Remove Item");
+    rightLayout->addWidget(removeItemButton);
+    connect(removeItemButton, SIGNAL(clicked()), this, SLOT(on_RemoveItemButton_clicked()));
+
+    resetListOfGoodsButton = new QPushButton("Reset List of Goods");
+    rightLayout->addWidget(resetListOfGoodsButton);
+    connect(resetListOfGoodsButton, SIGNAL(clicked()), this, SLOT(on_ResetListOfGoodsButton_clicked()));
 }
+
 

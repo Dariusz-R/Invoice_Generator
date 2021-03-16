@@ -19,38 +19,50 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 private slots:
 
+    //LEFT SIDE BUTTONS
     void on_ResetAgreementPartiesFormButton_clicked();
     void on_SaveButton_clicked();
     void on_GeneratePdfButton_clicked();
     void on_ResetAllButton_clicked();
-    void on_RemoveItemButton_clicked();
+
+    //RIGHT SIDE BUTTONS
     void on_addItemButton_clicked();
+    void on_RemoveItemButton_clicked();
     void on_ResetListOfGoodsButton_clicked();
 
 private:
 
-
     void readSaveAndSetStyleSheet();
     void configureAndShowMainWindowContent();
+
+    //Left Side
     void createLeftSide();
-    void createRightSide();
     void addInvoiceInfoView();
-    void createAgreementPartiesBox();
-    void createLeftSideButtons();
-    void createAgreementPartiesView();
     void setUpInvoiceInfoViewSizes();
-    void setUpAgreementPartiesViewSizes();
-    void setUpTableOfGoodsViewSizes();
+    void createAgreementPartiesBox();
     void setUpAgreementPartiesBoxSizes();
     void setUpAgreementPartiesHeaderSizes();
+    void createAgreementPartiesView();
+    void setUpAgreementPartiesViewSizes();
+    void createLeftSideButtons();
+
+    //Right Side
+    void createRightSide();
+    void setUpTableOfGoodsViewSizes();
+    void createRightSideButtons();
+
+//MEMBERS
 
     QWidget *mainWidget;
     QHBoxLayout *mainLayout;
     QString styleSheetContent;
 
+    //==================================
     //LEFT SIDE
+    //==================================
     QGroupBox *leftSide;
     QVBoxLayout *leftLayout;
 
@@ -69,23 +81,29 @@ private:
     AgreementPartiesModel *agreementPartiesModel;
     QTableView *agreementPartiesView;
 
-    //Left Side Buttons
+    //Buttons
     QPushButton *saveButton;
     QPushButton *generatePdfButton;
     QPushButton *resetAgreementPartiesFormButton;
     QPushButton *resetAllButton;
 
+    //==================================
     //RIGHT SIDE
+    //==================================
+
     QGroupBox *rightSide;
     QVBoxLayout *rightLayout;
+
+    //List of Goods Table
     QLabel *listOfGoodsHeader;
     TableOfGoodsModel *tableOfGoodsModel;
     QTableView *tableOfGoodsView;
 
-    //Right Side Buttons
+    //Buttons
     QPushButton *addItemButton;
     QPushButton *removeItemButton;
     QPushButton *resetListOfGoodsButton;
+
 
 };
 #endif // MAINWINDOW_H

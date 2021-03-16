@@ -1,11 +1,19 @@
 #include "invoiceinfomodel.h"
 
+//======================================================================
+//CONSTRUCTORS==========================================================
+//======================================================================
+
 InvoiceInfoModel::InvoiceInfoModel(QObject* parent) : QAbstractTableModel(parent)
 {
      invoiceNumber = "";
      dateOfIssue = "";
      dateOfPayment = "";
 }
+
+//======================================================================
+//PRIVATE METHODS=======================================================
+//======================================================================
 
 int InvoiceInfoModel::rowCount(const QModelIndex &parent) const
 {

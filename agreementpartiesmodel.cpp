@@ -1,5 +1,9 @@
 #include "agreementpartiesmodel.h"
 
+//======================================================================
+//CONSTRUCTORS==========================================================
+//======================================================================
+
 AgreementPartiesModel::AgreementPartiesModel(QObject* parent)
     : QAbstractTableModel(parent),
       numberOfColumns(2),
@@ -9,10 +13,18 @@ AgreementPartiesModel::AgreementPartiesModel(QObject* parent)
 
 }
 
+//======================================================================
+//DESCRUCTORS===========================================================
+//======================================================================
+
 AgreementPartiesModel::~AgreementPartiesModel()
 {
     qDeleteAll(companies);
 }
+
+//======================================================================
+//PRIVATE METHODS=======================================================
+//======================================================================
 
 int AgreementPartiesModel::rowCount(const QModelIndex &parent) const
 {

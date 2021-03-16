@@ -2,19 +2,159 @@
 
 #include <QDebug>
 
+//======================================================================
+//CONSTRUCTOR===========================================================
+//======================================================================
+
 TableOfGoodsModel::TableOfGoodsModel(QObject* parent)
     : QAbstractTableModel(parent),
-      numberOfColumns(8)
+      numberOfColumns(9)
 {
     listOfGoods.append(new Merchandise());
     listOfGoods.append(new Merchandise());
     listOfGoods.append(new Merchandise());
 }
 
+//======================================================================
+//DESCRUCTOR============================================================
+//======================================================================
+
 TableOfGoodsModel::~TableOfGoodsModel()
 {
     qDeleteAll(listOfGoods);
 }
+
+//======================================================================
+//PUBLIC SLOTS==========================================================
+//======================================================================
+
+void TableOfGoodsModel::addItem()
+{
+
+    beginInsertRows(QModelIndex(), listOfGoods.size() - 1, listOfGoods.size() - 1);
+    listOfGoods.append( new Merchandise);
+    endInsertRows();
+}
+
+bool TableOfGoodsModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if(listOfGoods.size()>0){
+        beginRemoveRows(parent, row, row + count - 1);
+        for( short i = row + count - 1; i == row ; --i){
+            delete listOfGoods.at(i);
+            listOfGoods.removeAt(i);
+            qDebug() << "Test removal i = " << i;
+        }
+        endRemoveRows();
+
+        updateOrdinalNumberColumn();
+
+        return true;
+    }
+    else
+        return false;
+}
+
+void TableOfGoodsModel::updateOrdinalNumberColumn()
+{
+    for(short i = 0 ; i < listOfGoods.size(); ++i){
+        listOfGoods.at(i)->setOrdinalNumber(QString::number(i));
+        emit dataChanged(index(i, OrdinalNumberColumn), index(i, OrdinalNumberColumn));
+    }
+}
+
+void TableOfGoodsModel::clearListOfGoods()
+{
+
+    beginRemoveRows(QModelIndex(), 0, listOfGoods.size()-1);
+    qDeleteAll(listOfGoods.begin(), listOfGoods.end());
+    listOfGoods.clear();
+    endRemoveRows();
+    addItem();
+}
+
+//======================================================================
+//PUBLIC METHODS========================================================
+//======================================================================
+
+short TableOfGoodsModel::getNumberOfColumns() const
+{
+    return numberOfColumns;
+}
+
+void TableOfGoodsModel::setNumberOfColumns(short value)
+{
+    numberOfColumns = value;
+}
+
+short TableOfGoodsModel::listOfGoodsSize() const
+{
+    return listOfGoods.size();
+}
+
+QString TableOfGoodsModel::chooseAndExecuteGetter(const QModelIndex &itemIndex)
+{
+    switch (itemIndex.column()) {
+
+    case OrdinalNumberColumn:
+        return listOfGoods.at(itemIndex.row())->getOrdinalNumber();
+    case ServiceOrDescriptionColumn:
+        return listOfGoods.at(itemIndex.row())->getServiceOrDescription();
+    case QuantityColumn:
+        return listOfGoods.at(itemIndex.row())->getQuantity();
+    case ExchangeRateColumn:
+        return listOfGoods.at(itemIndex.row())->getExchangeRate();
+    case UnitNetPriceColumn:
+        return listOfGoods.at(itemIndex.row())->getUnitNetPrice();
+    case NetAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getNetAmount();
+    case VatRateColumn:
+        return listOfGoods.at(itemIndex.row())->getVatRate();
+    case VatAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getVatAmount();
+    case GrossAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getGrossAmount();
+    default:
+        return "Error";
+    }
+}
+
+void TableOfGoodsModel::chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value)
+{
+    switch (itemIndex.column()) {
+
+    case OrdinalNumberColumn:
+        break;
+    case ServiceOrDescriptionColumn:
+        listOfGoods.at(itemIndex.row())->setServiceOrDescription(value);
+        break;
+    case QuantityColumn:
+        listOfGoods.at(itemIndex.row())->setQuantity(value);
+        break;
+    case ExchangeRateColumn:
+        listOfGoods.at(itemIndex.row())->setExchangeRate(value);
+        break;
+    case UnitNetPriceColumn:
+        listOfGoods.at(itemIndex.row())->setUnitNetPrice(value);
+        break;
+    case NetAmountColumn:
+        listOfGoods.at(itemIndex.row())->setNetAmount(value);
+        break;
+    case VatRateColumn:
+        listOfGoods.at(itemIndex.row())->setVatRate(value);
+        break;
+    case VatAmountColumn:
+        listOfGoods.at(itemIndex.row())->setVatAmount(value);
+        break;
+    case GrossAmountColumn:
+        listOfGoods.at(itemIndex.row())->setGrossAmount(value);
+        break;
+    }
+}
+
+//======================================================================
+//PRIVATE METHODS=======================================================
+//======================================================================
 
 int TableOfGoodsModel::rowCount(const QModelIndex &parent) const
 {
@@ -97,83 +237,6 @@ QVariant TableOfGoodsModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 
-QString TableOfGoodsModel::chooseAndExecuteGetter(const QModelIndex &itemIndex)
-{
-    switch (itemIndex.column()) {
-
-    case OrdinalNumberColumn:
-        return listOfGoods.at(itemIndex.row())->getOrdinalNumber();
-    case ServiceOrDescriptionColumn:
-        return listOfGoods.at(itemIndex.row())->getServiceOrDescription();
-    case QuantityColumn:
-        return listOfGoods.at(itemIndex.row())->getQuantity();
-    case ExchangeRateColumn:
-        return listOfGoods.at(itemIndex.row())->getExchangeRate();
-    case UnitNetPriceColumn:
-        return listOfGoods.at(itemIndex.row())->getUnitNetPrice();
-    case NetAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getNetAmount();
-    case VatRateColumn:
-        return listOfGoods.at(itemIndex.row())->getVatRate();
-    case VatAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getVatAmount();
-    case GrossAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getGrossAmount();
-    default:
-        return "Error";
-    }
-}
-
-Qt::ItemFlags TableOfGoodsModel::flags(const QModelIndex &index) const
-{
-    if (!index.isValid()) {
-        return QAbstractItemModel::flags(index);
-    }
-    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-}
-
-void TableOfGoodsModel::chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value)
-{
-    switch (itemIndex.column()) {
-
-    case OrdinalNumberColumn:
-        //listOfGoods.at(itemIndex.row())->setOrdinalNumber(value);
-        break;
-    case ServiceOrDescriptionColumn:
-        listOfGoods.at(itemIndex.row())->setServiceOrDescription(value);
-        break;
-    case QuantityColumn:
-        listOfGoods.at(itemIndex.row())->setQuantity(value);
-        break;
-    case ExchangeRateColumn:
-        listOfGoods.at(itemIndex.row())->setExchangeRate(value);
-        break;
-    case UnitNetPriceColumn:
-        listOfGoods.at(itemIndex.row())->setUnitNetPrice(value);
-        break;
-    case NetAmountColumn:
-        listOfGoods.at(itemIndex.row())->setNetAmount(value);
-        break;
-    case VatRateColumn:
-        listOfGoods.at(itemIndex.row())->setVatRate(value);
-        break;
-    case VatAmountColumn:
-        listOfGoods.at(itemIndex.row())->setVatAmount(value);
-        break;
-    case GrossAmountColumn:
-        listOfGoods.at(itemIndex.row())->setGrossAmount(value);
-        break;
-    }
-}
-
-void TableOfGoodsModel::updateOrdinalNumberColumn()
-{
-    for(short i = 0 ; i < listOfGoods.size(); ++i){
-        listOfGoods.at(i)->setOrdinalNumber(QString::number(i));
-        emit dataChanged(index(i, OrdinalNumberColumn), index(i, OrdinalNumberColumn));
-    }
-}
-
 bool TableOfGoodsModel::setData(const QModelIndex &index, const QVariant &value, int role){
 
     if(!index.isValid())
@@ -192,45 +255,27 @@ bool TableOfGoodsModel::setData(const QModelIndex &index, const QVariant &value,
     return false;
 }
 
-short TableOfGoodsModel::listOfGoodsSize() const
+Qt::ItemFlags TableOfGoodsModel::flags(const QModelIndex &index) const
 {
-    return listOfGoods.size();
-}
-
-void TableOfGoodsModel::clearListOfGoods()
-{
-
-    beginRemoveRows(QModelIndex(), 0, listOfGoods.size()-1);
-    qDeleteAll(listOfGoods.begin(), listOfGoods.end());
-    listOfGoods.clear();
-    endRemoveRows();
-    addItem();
-}
-
-void TableOfGoodsModel::addItem()
-{
-
-    beginInsertRows(QModelIndex(), listOfGoods.size() - 1, listOfGoods.size() - 1);
-    listOfGoods.append( new Merchandise);
-    endInsertRows();
-}
-
-bool TableOfGoodsModel::removeRows(int row, int count, const QModelIndex &parent)
-{
-    if(listOfGoods.size()>0){
-        beginRemoveRows(parent, row, row + count - 1);
-        for( short i = row + count - 1; i == row ; --i){
-            delete listOfGoods.at(i);
-            listOfGoods.removeAt(i);
-            qDebug() << "Test removal i = " << i;
-        }
-        endRemoveRows();
-
-        updateOrdinalNumberColumn();
-
-        return true;
+    if (!index.isValid()) {
+        return QAbstractItemModel::flags(index);
     }
-    else
-        return false;
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
