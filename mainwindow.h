@@ -23,7 +23,8 @@ public:
 private slots:
 
     //LEFT SIDE BUTTONS
-    void on_ResetAgreementPartiesFormButton_clicked();
+    void on_AgreementPartiesResetCustomerButton_clicked();
+    void on_AgreementPartiesResetSupplierButton_clicked();
     void on_SaveButton_clicked();
     void on_GeneratePdfButton_clicked();
     void on_ResetAllButton_clicked();
@@ -84,7 +85,8 @@ private:
     //Buttons
     QPushButton *saveButton;
     QPushButton *generatePdfButton;
-    QPushButton *resetAgreementPartiesFormButton;
+    QPushButton *resetSupplierFormButton;
+    QPushButton *resetCustomerFormButton;
     QPushButton *resetAllButton;
 
     //==================================

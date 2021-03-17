@@ -43,7 +43,6 @@ bool TableOfGoodsModel::removeRows(int row, int count, const QModelIndex &parent
         for( short i = row + count - 1; i == row ; --i){
             delete listOfGoods.at(i);
             listOfGoods.removeAt(i);
-            qDebug() << "Test removal i = " << i;
         }
         endRemoveRows();
 
@@ -92,65 +91,6 @@ short TableOfGoodsModel::listOfGoodsSize() const
     return listOfGoods.size();
 }
 
-QString TableOfGoodsModel::chooseAndExecuteGetter(const QModelIndex &itemIndex)
-{
-    switch (itemIndex.column()) {
-
-    case OrdinalNumberColumn:
-        return listOfGoods.at(itemIndex.row())->getOrdinalNumber();
-    case ServiceOrDescriptionColumn:
-        return listOfGoods.at(itemIndex.row())->getServiceOrDescription();
-    case QuantityColumn:
-        return listOfGoods.at(itemIndex.row())->getQuantity();
-    case ExchangeRateColumn:
-        return listOfGoods.at(itemIndex.row())->getExchangeRate();
-    case UnitNetPriceColumn:
-        return listOfGoods.at(itemIndex.row())->getUnitNetPrice();
-    case NetAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getNetAmount();
-    case VatRateColumn:
-        return listOfGoods.at(itemIndex.row())->getVatRate();
-    case VatAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getVatAmount();
-    case GrossAmountColumn:
-        return listOfGoods.at(itemIndex.row())->getGrossAmount();
-    default:
-        return "Error";
-    }
-}
-
-void TableOfGoodsModel::chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value)
-{
-    switch (itemIndex.column()) {
-
-    case OrdinalNumberColumn:
-        break;
-    case ServiceOrDescriptionColumn:
-        listOfGoods.at(itemIndex.row())->setServiceOrDescription(value);
-        break;
-    case QuantityColumn:
-        listOfGoods.at(itemIndex.row())->setQuantity(value);
-        break;
-    case ExchangeRateColumn:
-        listOfGoods.at(itemIndex.row())->setExchangeRate(value);
-        break;
-    case UnitNetPriceColumn:
-        listOfGoods.at(itemIndex.row())->setUnitNetPrice(value);
-        break;
-    case NetAmountColumn:
-        listOfGoods.at(itemIndex.row())->setNetAmount(value);
-        break;
-    case VatRateColumn:
-        listOfGoods.at(itemIndex.row())->setVatRate(value);
-        break;
-    case VatAmountColumn:
-        listOfGoods.at(itemIndex.row())->setVatAmount(value);
-        break;
-    case GrossAmountColumn:
-        listOfGoods.at(itemIndex.row())->setGrossAmount(value);
-        break;
-    }
-}
 
 //======================================================================
 //PRIVATE METHODS=======================================================
@@ -253,6 +193,66 @@ bool TableOfGoodsModel::setData(const QModelIndex &index, const QVariant &value,
 
     }
     return false;
+}
+
+QString TableOfGoodsModel::chooseAndExecuteGetter(const QModelIndex &itemIndex)
+{
+    switch (itemIndex.column()) {
+
+    case OrdinalNumberColumn:
+        return listOfGoods.at(itemIndex.row())->getOrdinalNumber();
+    case ServiceOrDescriptionColumn:
+        return listOfGoods.at(itemIndex.row())->getServiceOrDescription();
+    case QuantityColumn:
+        return listOfGoods.at(itemIndex.row())->getQuantity();
+    case ExchangeRateColumn:
+        return listOfGoods.at(itemIndex.row())->getExchangeRate();
+    case UnitNetPriceColumn:
+        return listOfGoods.at(itemIndex.row())->getUnitNetPrice();
+    case NetAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getNetAmount();
+    case VatRateColumn:
+        return listOfGoods.at(itemIndex.row())->getVatRate();
+    case VatAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getVatAmount();
+    case GrossAmountColumn:
+        return listOfGoods.at(itemIndex.row())->getGrossAmount();
+    default:
+        return "Error";
+    }
+}
+
+void TableOfGoodsModel::chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value)
+{
+    switch (itemIndex.column()) {
+
+    case OrdinalNumberColumn:
+        break;
+    case ServiceOrDescriptionColumn:
+        listOfGoods.at(itemIndex.row())->setServiceOrDescription(value);
+        break;
+    case QuantityColumn:
+        listOfGoods.at(itemIndex.row())->setQuantity(value);
+        break;
+    case ExchangeRateColumn:
+        listOfGoods.at(itemIndex.row())->setExchangeRate(value);
+        break;
+    case UnitNetPriceColumn:
+        listOfGoods.at(itemIndex.row())->setUnitNetPrice(value);
+        break;
+    case NetAmountColumn:
+        listOfGoods.at(itemIndex.row())->setNetAmount(value);
+        break;
+    case VatRateColumn:
+        listOfGoods.at(itemIndex.row())->setVatRate(value);
+        break;
+    case VatAmountColumn:
+        listOfGoods.at(itemIndex.row())->setVatAmount(value);
+        break;
+    case GrossAmountColumn:
+        listOfGoods.at(itemIndex.row())->setGrossAmount(value);
+        break;
+    }
 }
 
 Qt::ItemFlags TableOfGoodsModel::flags(const QModelIndex &index) const

@@ -34,9 +34,14 @@ MainWindow::~MainWindow()
 
 //LEFT SIDE BUTTONS
 
-void MainWindow::on_ResetAgreementPartiesFormButton_clicked()
+void MainWindow::on_AgreementPartiesResetSupplierButton_clicked()
 {
+    agreementPartiesModel->resetAgreementParty(AgreementPartiesModel::SupplierColumn);
+}
 
+void MainWindow::on_AgreementPartiesResetCustomerButton_clicked()
+{
+    agreementPartiesModel->resetAgreementParty(AgreementPartiesModel::CustomerColumn);
 }
 
 void MainWindow::on_SaveButton_clicked()
@@ -51,6 +56,10 @@ void MainWindow::on_GeneratePdfButton_clicked()
 
 void MainWindow::on_ResetAllButton_clicked()
 {
+    invoiceInfoModel->resetInvoiceInformation();
+    agreementPartiesModel->resetAgreementParty(AgreementPartiesModel::SupplierColumn);
+    agreementPartiesModel->resetAgreementParty(AgreementPartiesModel::CustomerColumn);
+    tableOfGoodsModel->clearListOfGoods();
 
 }
 
@@ -197,15 +206,22 @@ void MainWindow::setUpAgreementPartiesViewSizes()
     agreementPartiesView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     agreementPartiesView->verticalHeader()->setMinimumWidth(100);
     agreementPartiesView->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::supplierColumn, QHeaderView::Stretch);
-    agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::customerColumn, QHeaderView::Stretch);
+    agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::SupplierColumn, QHeaderView::Stretch);
+    agreementPartiesView->horizontalHeader()->setSectionResizeMode(AgreementPartiesModel::CustomerColumn, QHeaderView::Stretch);
 }
 
 void MainWindow::createLeftSideButtons()
 {
-    resetAgreementPartiesFormButton = new QPushButton("Reset Agreement Parties Form");
-    leftLayout->addWidget(resetAgreementPartiesFormButton);
-    connect(resetAgreementPartiesFormButton, SIGNAL(clicked()), this, SLOT(on_ResetAgreementPartiesFormButton_clicked()));
+    QHBoxLayout *leftSideResetButtonsLayout = new QHBoxLayout;
+    resetSupplierFormButton = new QPushButton("Reset Supplier");
+    leftSideResetButtonsLayout->addWidget(resetSupplierFormButton);
+    connect(resetSupplierFormButton, SIGNAL(clicked()), this, SLOT(on_AgreementPartiesResetSupplierButton_clicked()));
+
+    resetCustomerFormButton = new QPushButton("Reset Customer");
+    leftSideResetButtonsLayout->addWidget(resetCustomerFormButton);
+    connect(resetCustomerFormButton, SIGNAL(clicked()), this, SLOT(on_AgreementPartiesResetCustomerButton_clicked()));
+
+    leftLayout->addLayout(leftSideResetButtonsLayout);
 
     saveButton = new QPushButton("Save");
     leftLayout->addWidget(saveButton);
@@ -271,7 +287,7 @@ void MainWindow::createRightSideButtons()
     rightLayout->addWidget(removeItemButton);
     connect(removeItemButton, SIGNAL(clicked()), this, SLOT(on_RemoveItemButton_clicked()));
 
-    resetListOfGoodsButton = new QPushButton("Reset List of Goods");
+    resetListOfGoodsButton = new QPushButton("Reset List");
     rightLayout->addWidget(resetListOfGoodsButton);
     connect(resetListOfGoodsButton, SIGNAL(clicked()), this, SLOT(on_ResetListOfGoodsButton_clicked()));
 }

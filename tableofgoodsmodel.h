@@ -2,6 +2,7 @@
 #define TABLEOFGOODSMODEL_H
 
 #include <QAbstractListModel>
+#include <QList>
 
 #include "merchandise.h"
 
@@ -25,8 +26,6 @@ public :
     short getNumberOfColumns() const;
     void setNumberOfColumns(short value);
     short listOfGoodsSize() const;
-    QString chooseAndExecuteGetter(const QModelIndex &itemIndex);
-    void chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value);
 
 private:
 
@@ -35,6 +34,8 @@ private:
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    QString chooseAndExecuteGetter(const QModelIndex &itemIndex);
+    void chooseAndExecuteSetter(const QModelIndex &itemIndex, const QString &value);
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 public:

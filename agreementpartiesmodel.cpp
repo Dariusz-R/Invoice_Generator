@@ -1,5 +1,7 @@
 #include "agreementpartiesmodel.h"
 
+#include <QDebug>
+
 //======================================================================
 //CONSTRUCTORS==========================================================
 //======================================================================
@@ -8,7 +10,7 @@ AgreementPartiesModel::AgreementPartiesModel(QObject* parent)
     : QAbstractTableModel(parent),
       numberOfColumns(2),
       numberOfRows(8),
-      companies({new Company, new Company})
+      agreementParties({new Company, new Company})
 {
 
 }
@@ -19,7 +21,17 @@ AgreementPartiesModel::AgreementPartiesModel(QObject* parent)
 
 AgreementPartiesModel::~AgreementPartiesModel()
 {
-    qDeleteAll(companies);
+    qDeleteAll(agreementParties);
+}
+
+//======================================================================
+//PUBLIC SLOTS==========================================================
+//======================================================================
+
+void AgreementPartiesModel::resetAgreementParty(short columnName)
+{
+    agreementParties.at(columnName)->resetAllMembers();
+    emit dataChanged(index(FullNameRow, SupplierColumn), index(VatNumberRow, CustomerColumn));
 }
 
 //======================================================================
@@ -46,22 +58,22 @@ QVariant AgreementPartiesModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole)
         switch (index.row()) {
 
-        case vatNumberRow:
-            return companies.at(index.column())->getVatNumber();
-        case fullNameRow:
-            return companies.at(index.column())->getFullName();
-        case countryRow:
-            return companies.at(index.column())->getCountry();
-        case streetRow:
-            return companies.at(index.column())->getStreet();
-        case cityRow:
-            return companies.at(index.column())->getCity();
-        case houseNumberRow:
-            return companies.at(index.column())->getHouseNumber();
-        case stateRow:
-            return companies.at(index.column())->getState();
-        case postalCodeRow:
-            return companies.at(index.column())->getPostalCode();
+        case VatNumberRow:
+            return agreementParties.at(index.column())->getVatNumber();
+        case FullNameRow:
+            return agreementParties.at(index.column())->getFullName();
+        case CountryRow:
+            return agreementParties.at(index.column())->getCountry();
+        case StreetRow:
+            return agreementParties.at(index.column())->getStreet();
+        case CityRow:
+            return agreementParties.at(index.column())->getCity();
+        case HouseNumberRow:
+            return agreementParties.at(index.column())->getHouseNumber();
+        case StateRow:
+            return agreementParties.at(index.column())->getState();
+        case PostalCodeRow:
+            return agreementParties.at(index.column())->getPostalCode();
         default:
             return QString("Error - no valid data.");
         }
@@ -75,22 +87,22 @@ QVariant AgreementPartiesModel::headerData(int section, Qt::Orientation orientat
     {
         switch (section) {
 
-        case vatNumberRow:
-            return "VAT Number";
-        case fullNameRow:
+        case FullNameRow:
             return "Full Name";
-        case countryRow:
-            return "Country";
-        case streetRow:
-            return "Street";
-        case cityRow:
-            return "City";
-        case houseNumberRow:
+        case HouseNumberRow:
             return "House Number";
-        case stateRow:
-            return "State";
-        case postalCodeRow:
+        case StreetRow:
+            return "Street";
+        case PostalCodeRow:
             return "Postal Code";
+        case CityRow:
+            return "City";
+        case StateRow:
+            return "State";
+        case CountryRow:
+            return "Country";
+        case VatNumberRow:
+            return "VAT Number";
         default:
             return QString("Error - no valid data.");
         }
@@ -99,9 +111,9 @@ QVariant AgreementPartiesModel::headerData(int section, Qt::Orientation orientat
     {
         switch (section) {
 
-        case supplierColumn:
+        case SupplierColumn:
             return "Supplier";
-        case customerColumn:
+        case CustomerColumn:
             return "Customer";
         default:
             return QString("Error - no valid data");
@@ -109,3 +121,87 @@ QVariant AgreementPartiesModel::headerData(int section, Qt::Orientation orientat
     }
     return QVariant();
 }
+
+bool AgreementPartiesModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(!index.isValid())
+        return false;
+
+    if(role == Qt::EditRole)
+    {
+        if(chooseAndExecuteGetter(index) == value)
+            return false;
+
+        chooseAndExecuteSetter(index, value.toString());
+        emit dataChanged(index, index);
+        return true;
+
+    }
+    return false;
+}
+
+QString AgreementPartiesModel::chooseAndExecuteGetter(const QModelIndex &fieldPosition)
+{
+    switch (fieldPosition.row()) {
+
+    case FullNameRow:
+        return agreementParties.at(fieldPosition.column())->getFullName();
+    case HouseNumberRow:
+        return agreementParties.at(fieldPosition.column())->getHouseNumber();
+    case StreetRow:
+        return agreementParties.at(fieldPosition.column())->getStreet();
+    case PostalCodeRow:
+        return agreementParties.at(fieldPosition.column())->getPostalCode();
+    case CityRow:
+        return agreementParties.at(fieldPosition.column())->getCity();
+    case StateRow:
+        return agreementParties.at(fieldPosition.column())->getState();
+    case CountryRow:
+        return agreementParties.at(fieldPosition.column())->getCountry();
+    case VatNumberRow:
+        return agreementParties.at(fieldPosition.column())->getVatNumber();
+    default:
+        return "Error";
+    }
+}
+
+void AgreementPartiesModel::chooseAndExecuteSetter(const QModelIndex &fieldPosition, const QString &value)
+{
+    switch (fieldPosition.row()) {
+
+    case FullNameRow:
+        agreementParties.at(fieldPosition.column())->setFullName(value);
+        break;
+    case HouseNumberRow:
+        agreementParties.at(fieldPosition.column())->setHouseNumber(value);
+        break;
+    case StreetRow:
+        agreementParties.at(fieldPosition.column())->setStreet(value);
+        break;
+    case PostalCodeRow:
+        agreementParties.at(fieldPosition.column())->setPostalCode(value);
+        break;
+    case CityRow:
+        agreementParties.at(fieldPosition.column())->setCity(value);
+        break;
+    case StateRow:
+        agreementParties.at(fieldPosition.column())->setState(value);
+        break;
+    case CountryRow:
+        agreementParties.at(fieldPosition.column())->setCountry(value);
+        break;
+    case VatNumberRow:
+        agreementParties.at(fieldPosition.column())->setVatNumber(value);
+        break;
+    }
+}
+
+Qt::ItemFlags AgreementPartiesModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return QAbstractItemModel::flags(index);
+    }
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
+
