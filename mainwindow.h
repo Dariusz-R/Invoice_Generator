@@ -11,6 +11,7 @@
 #include "invoiceinfomodel.h"
 #include "agreementpartiesmodel.h"
 #include "tableofgoodsmodel.h"
+#include "invoice.h"
 
 class MainWindow : public QMainWindow
 {
@@ -88,6 +89,11 @@ private:
     QPushButton *resetSupplierFormButton;
     QPushButton *resetCustomerFormButton;
     QPushButton *resetAllButton;
+
+    //Invoice
+
+    Invoice *currentInvoice;
+
 
     //==================================
     //RIGHT SIDE

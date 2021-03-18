@@ -6,6 +6,7 @@
 
 #include "mainwindow.h"
 
+
 //======================================================================
 //CONSTRUCTORS===========================================================
 //======================================================================
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete mainWidget;
 }
 
 //======================================================================
@@ -46,6 +48,10 @@ void MainWindow::on_AgreementPartiesResetCustomerButton_clicked()
 
 void MainWindow::on_SaveButton_clicked()
 {
+    currentInvoice = new Invoice;
+    currentInvoice->setInvoiceInfoModel(invoiceInfoModel);
+    currentInvoice->setAgreementPartiesModel(agreementPartiesModel);
+    currentInvoice->setTableOfGoodsModel(tableOfGoodsModel);
 
 }
 
